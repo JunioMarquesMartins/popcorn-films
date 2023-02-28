@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Card } from '../components/Card'
 import { apiMdb } from '../lib/axios'
 
 interface Movie {
@@ -15,12 +16,20 @@ export function MoviesPage() {
 
   const fetchMovies = useCallback(async () => {
     const response = await apiMdb.get(`movie/popular?api_key=${TMDB_KEY}`)
-    setMovies([response.data])
+    setMovies(response.data.results)
   }, [TMDB_KEY])
 
   useEffect(() => {
     fetchMovies()
   }, [fetchMovies])
 
-  return <div>Page Movie</div>
+  return (
+    <section className="max-w-5xl m-auto py-5">
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
+        {movies.map((movie) => {
+          return <Card key={movie.id} {...movie} />
+        })}
+      </div>
+    </section>
+  )
 }
