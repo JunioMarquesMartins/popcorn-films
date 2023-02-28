@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Card } from '../components/Card'
+import { Search } from '../components/Search'
 import { apiMdb } from '../lib/axios'
 
 interface Movie {
@@ -25,6 +26,7 @@ export function MoviesPage() {
 
   return (
     <section className="max-w-5xl m-auto py-5">
+      <Search />
       <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
         {movies.map((movie) => {
           return <Card key={movie.id} {...movie} />
