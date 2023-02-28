@@ -17,6 +17,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
+    "use-context-selector": "^1.4.1",
     "zod": "^3.20.6"
   },
   "devDependencies": {
