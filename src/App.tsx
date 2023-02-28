@@ -1,10 +1,12 @@
+import { BrowserRouter } from 'react-router-dom'
+import { Router } from './Router'
 import './styles/global.css'
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="bg-black text-white">Popcorn films</h1>
-    </div>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 
