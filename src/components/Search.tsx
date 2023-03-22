@@ -1,10 +1,8 @@
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { MoviesContext } from '../contexts/MoviesContext'
 
 import { MagnifyingGlass } from 'phosphor-react'
-import { useContext } from 'react'
 
 const searchFormSchema = z.object({
   query: z.string(),
@@ -12,21 +10,23 @@ const searchFormSchema = z.object({
 
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
-export function Search() {
+interface SearchProps {
+  handleSearchMovies: (data: string) => void
+}
+
+export function Search({ handleSearchMovies }: SearchProps) {
   const { register, handleSubmit, reset } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 
-  const { fetchMovies } = useContext(MoviesContext)
-
-  async function handleSearchMovies(data: SearchFormInputs) {
-    await fetchMovies(data.query)
+  async function searchMovies(data: SearchFormInputs) {
+    await handleSearchMovies(data.query)
     reset()
   }
   return (
     <form
       className="flex gap-4 my-5 items-center"
-      onSubmit={handleSubmit(handleSearchMovies)}
+      onSubmit={handleSubmit(searchMovies)}
     >
       <input
         className="flex-1 p-3 border border-black rounded-md outline-black"
