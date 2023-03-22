@@ -1,5 +1,11 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react'
-import { createContext } from 'use-context-selector'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
+
 import { apiMdb } from '../lib/axios'
 
 interface Movie {

@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useContextSelector } from 'use-context-selector'
 import { MoviesContext } from '../contexts/MoviesContext'
 
 import { MagnifyingGlass } from 'phosphor-react'
+import { useContext } from 'react'
 
 const searchFormSchema = z.object({
   query: z.string(),
@@ -17,9 +17,7 @@ export function Search() {
     resolver: zodResolver(searchFormSchema),
   })
 
-  const fetchMovies = useContextSelector(MoviesContext, (context) => {
-    return context.fetchMovies
-  })
+  const { fetchMovies } = useContext(MoviesContext)
 
   async function handleSearchMovies(data: SearchFormInputs) {
     await fetchMovies(data.query)
