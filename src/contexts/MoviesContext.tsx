@@ -8,7 +8,7 @@ import {
 
 import { apiMdb } from '../lib/axios'
 
-interface Movie {
+export interface Movie {
   average_rating: number
   backdrop_path: string
   id: number
