@@ -13,4 +13,4 @@ and add the api_key to the file
 VITE_TMDB_KEY=yourkey
 ```
 
-3️⃣ `npm install and npm run dev` 🎉
+2️⃣ `npm install and npm run dev` 🎉
