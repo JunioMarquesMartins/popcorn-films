@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { fetchMovieId, fetchVideoId, useMoviesFetch } from '../api/server'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { Loading } from '../components/Loading'
 import { MovieDetail } from '../components/MovieDetail'
 
 import { Search } from '../components/Search'
@@ -49,7 +50,7 @@ export function MoviesPage() {
       <section className="max-w-5xl m-auto py-5">
         <Search handleSearchMovies={handleSearchMovies} />
         {isLoading ? (
-          <p>Loading ....</p>
+          <Loading />
         ) : (
           <div>
             <div className="overflow-x-auto">

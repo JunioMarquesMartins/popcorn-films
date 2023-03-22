@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Loading } from '../components/Loading'
 import { StarRating } from '../components/StartRating'
 import { apiMdb } from '../lib/axios'
 import { dateFormatter } from '../utils/formatterDate'
@@ -63,7 +64,7 @@ export function DetailPage() {
   return (
     <>
       {isLoading ? (
-        <p>Loading .......</p>
+        <Loading />
       ) : (
         <div
           key={detailMovie.id}
