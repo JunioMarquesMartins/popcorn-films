@@ -8,6 +8,7 @@ interface CardProps {
   title: string
   release_date: string
   myRate?: string
+  handleGetVideoId: (id: number) => void
 }
 
 export function Card(props: CardProps) {
@@ -53,6 +54,7 @@ export function Card(props: CardProps) {
               className="md:opacity-0 transition:opacity duration-500 ease-in-out group-hover:opacity-100"
               type="button"
               text="See trailer"
+              onclick={() => props.handleGetVideoId(props.id)}
             >
               <YoutubeLogo size={20} />
             </Button>
