@@ -5,10 +5,12 @@ import { MovieData, myMoviesReducer } from '../reducers/reducer'
 export interface Movie {
   average_rating: number
   backdrop_path: string
+  videoId?: string
   id: number
   poster_path: string
   release_date: string
   title: string
+  overview: string
 }
 
 interface MovieContextType {

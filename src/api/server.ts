@@ -36,3 +36,42 @@ export function useMoviesFetch(url: string) {
 
   return { movies }
 }
+
+export const fetchVideoId = async (id: number) => {
+  try {
+    const response = await queryClient.fetchQuery(['getVideoId'], {
+      queryFn: () =>
+        apiMdb
+          .get(`movie/${id}/videos?api_key=${TMDB_KEY}`)
+          .then((response) => response.data),
+    })
+
+    const trailer = await response.results.find(
+      (trailerId: any) =>
+        trailerId.type === 'Clip' || trailerId.type === 'Trailer',
+    )
+
+    return trailer.key
+  } catch (e) {
+    console.log(e)
+  } finally {
+    console.log('🎉 Finally fetchVideoId ', id)
+  }
+}
+
+export const fetchMovieId = async (id: number) => {
+  try {
+    const response = await queryClient.fetchQuery(['getMovieDetailId'], {
+      queryFn: () =>
+        apiMdb
+          .get(`movie/${id}?api_key=${TMDB_KEY}`)
+          .then((response) => response.data),
+    })
+
+    return [response]
+  } catch (e) {
+    console.log(e)
+  } finally {
+    console.log('🎉 Finally fetchMovieId ', id)
+  }
+}
