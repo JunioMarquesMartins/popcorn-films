@@ -1,11 +1,9 @@
 # 🍿 popcorn films
-1️⃣ Switch to the develop branch
+![](popcorn.gif)
 
-```
-git checkout develop
-```
 
-2️⃣ Create a `.env.local` file
+
+1️⃣ Create a `.env.local` file
 ```
 touch .env.local
 ```

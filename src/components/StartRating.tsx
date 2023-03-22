@@ -1,3 +1,4 @@
+import { Check } from 'phosphor-react'
 import { useCallback, useContext, useState } from 'react'
 import { MoviesContext } from '../contexts/MoviesContext'
 import { apiMdb } from '../lib/axios'
@@ -13,29 +14,37 @@ export function StarRating({ id, sessionId, detailMovie }: StarProps) {
   const { addItem } = useContext(MoviesContext)
   const [rating, setRating] = useState(0)
   const [hover, setHover] = useState(0)
+  const [isRating, setIsRating] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(true)
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
   // do a refactor after
   const postRateMovie = useCallback(
     async (rating: string) => {
-      setIsLoading(true)
-      const response = await apiMdb.post(
-        `movie/${id}/rating?api_key=${TMDB_KEY}&guest_session_id=${sessionId}`,
-        {
-          value: rating,
-        },
-      )
-      setIsLoading(false)
+      try {
+        const response = await apiMdb.post(
+          `movie/${id}/rating?api_key=${TMDB_KEY}&guest_session_id=${sessionId}`,
+          {
+            value: rating,
+          },
+        )
 
-      const newMovieRate = { ...detailMovie, myRate: rating }
-      addItem(newMovieRate)
+        const newMovieRate = { ...detailMovie, myRate: rating }
+        addItem(newMovieRate)
+        setIsRating(true)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setTimeout(() => {
+          setIsRating(false)
+          window.scrollTo(0, 0)
+        }, 600)
+      }
     },
     [id, TMDB_KEY, detailMovie, addItem, sessionId],
   )
 
   async function handleRateMyMovie() {
-    await postRateMovie(String(rating))
+    postRateMovie(String(rating))
   }
   return (
     <div className="star-rating mt-3">
@@ -68,6 +77,7 @@ export function StarRating({ id, sessionId, detailMovie }: StarProps) {
             type="button"
           >
             Send
+            {isRating && <Check size={20} />}
           </button>
         </div>
       </div>

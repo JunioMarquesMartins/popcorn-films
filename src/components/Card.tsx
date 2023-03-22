@@ -40,7 +40,7 @@ export function Card(props: CardProps) {
           <div
             className="md:absolute md:top-[40%] flex items-center gap-2
           md:left-[50%] md:translate-x-[-50%] w-full
-           text-white px-8 py-4 rounded-lg text-sm"
+           text-white px-4 md:px-8 py-4 rounded-lg text-sm"
           >
             <Button
               className="md:opacity-0 transition:opacity duration-500 ease-in-out group-hover:opacity-100"
