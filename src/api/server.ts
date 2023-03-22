@@ -15,6 +15,7 @@ const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
 
 export function useMoviesFetch(url: string) {
   const [movies, setMovies] = useState<Movie[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -29,12 +30,13 @@ export function useMoviesFetch(url: string) {
         console.log(e)
       } finally {
         console.log('🎉 Finally fetchMovies ', url)
+        setIsLoading(false)
       }
     }
     fetchMovies()
   }, [url])
 
-  return { movies }
+  return { movies, isLoading }
 }
 
 export const fetchVideoId = async (id: number) => {
