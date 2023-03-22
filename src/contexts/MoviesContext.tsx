@@ -1,12 +1,6 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
-
-import { apiMdb } from '../lib/axios'
+import { createContext, ReactNode, useReducer, useEffect } from 'react'
+import { addItemAction } from '../reducers/actions'
+import { MovieData, myMoviesReducer } from '../reducers/reducer'
 
 export interface Movie {
   average_rating: number
@@ -18,8 +12,8 @@ export interface Movie {
 }
 
 interface MovieContextType {
-  movies: Movie[]
-  fetchMovies: (query?: string) => Promise<void>
+  myMovies: MovieData[]
+  addItem: (newMovie: MovieData) => void
 }
 
 interface MoviesProviderProps {
@@ -29,29 +23,43 @@ interface MoviesProviderProps {
 export const MoviesContext = createContext({} as MovieContextType)
 
 export function MoviesProvider({ children }: MoviesProviderProps) {
-  const [movies, setMovies] = useState<Movie[]>([])
-
-  const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
-  const fetchMovies = useCallback(
-    async (query?: string) => {
-      const url = query
-        ? `search/movie?api_key=${TMDB_KEY}&query=${query}`
-        : `movie/popular?api_key=${TMDB_KEY}`
-      const response = await apiMdb.get(url)
-      setMovies(response.data.results)
+  const [cyclesState, dispatch] = useReducer(
+    myMoviesReducer,
+    {
+      myMovies: [],
     },
-    [TMDB_KEY],
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@movie-app:myMovies-state-1.0.0',
+      )
+
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      } else {
+        return {
+          myMovies: [],
+        }
+      }
+    },
   )
 
+  const { myMovies } = cyclesState
+
+  function addItem(newMovie: MovieData) {
+    dispatch(addItemAction(newMovie))
+  }
+
   useEffect(() => {
-    fetchMovies()
-  }, [fetchMovies])
+    const stateJSON = JSON.stringify(cyclesState)
+
+    localStorage.setItem('@movie-app:myMovies-state-1.0.0', stateJSON)
+  }, [cyclesState])
 
   return (
     <MoviesContext.Provider
       value={{
-        movies,
-        fetchMovies,
+        myMovies,
+        addItem,
       }}
     >
       {children}
