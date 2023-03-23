@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { StarRating } from '../components/StartRating'
 import { apiMdb } from '../lib/axios'
+import { CONVERTE_RATE_VALUE, DATA_STARS } from '../utils/converteRateValue'
 import { dateFormatter } from '../utils/formatterDate'
 import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
 
@@ -103,9 +104,28 @@ export function DetailPage() {
                 <strong>Release:</strong>{' '}
                 {dateFormatter.format(new Date(detailMovie.release_date))}
               </p>
-              <p>
-                <strong>Average Rating:</strong> {detailMovie.vote_average}
-              </p>
+              <div>
+                <strong>Average Rating:</strong>(
+                {CONVERTE_RATE_VALUE(detailMovie.vote_average)})
+                <div>
+                  {DATA_STARS(detailMovie?.vote_average).map((vote, index) => {
+                    return (
+                      <span key={index} className="star on">
+                        &#9733;
+                      </span>
+                    )
+                  })}
+                  {[
+                    ...Array(5 - DATA_STARS(detailMovie?.vote_average).length),
+                  ].map((vote, index) => {
+                    return (
+                      <span key={index} className="star off">
+                        &#9733;
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
               <p>
                 <strong>Budget:</strong> {detailMovie.budget}
               </p>
