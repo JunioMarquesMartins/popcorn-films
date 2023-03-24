@@ -2,6 +2,7 @@ import { apiMdb } from '../lib/axios'
 import { QueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Movie } from '../contexts/MoviesContext'
+import { MovieData } from '../reducers/reducer'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,34 @@ export function useMoviesFetch(url: string) {
   }, [url])
 
   return { movies, isLoading }
+}
+
+export function useFetchDetailMovie(id: string | undefined) {
+  const [detailMovie, setDetailMovie] = useState<MovieData[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchDetailMovie = async () => {
+      try {
+        const response = await apiMdb
+          .get(`movie/${id}?api_key=${TMDB_KEY}`)
+          .then((response) => response.data)
+          .catch((error) => {
+            console.log(error)
+          })
+        setDetailMovie([response])
+      } catch (error) {
+        console.log(error)
+        setIsLoading(false)
+      } finally {
+        console.log('🎉 Finally fetchDetailMovie ', id)
+        setIsLoading(false)
+      }
+    }
+
+    fetchDetailMovie()
+  }, [id])
+  return { isLoading, detailMovie }
 }
 
 export const fetchVideoId = async (id: number) => {
