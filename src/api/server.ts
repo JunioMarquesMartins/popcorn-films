@@ -47,12 +47,12 @@ export function useFetchDetailMovie(id: string | undefined) {
   useEffect(() => {
     const fetchDetailMovie = async () => {
       try {
-        const response = await apiMdb
-          .get(`movie/${id}?api_key=${TMDB_KEY}`)
-          .then((response) => response.data)
-          .catch((error) => {
-            console.log(error)
-          })
+        const response = await queryClient.fetchQuery(['getDetailMovie'], {
+          queryFn: () =>
+            apiMdb
+              .get(`movie/${id}?api_key=${TMDB_KEY}`)
+              .then((response) => response.data),
+        })
         setDetailMovie([response])
       } catch (error) {
         console.log(error)
