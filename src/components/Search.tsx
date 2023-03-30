@@ -3,16 +3,13 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { MagnifyingGlass } from 'phosphor-react'
+import { SearchProps } from '../types'
 
 const searchFormSchema = z.object({
   query: z.string(),
 })
 
 type SearchFormInputs = z.infer<typeof searchFormSchema>
-
-interface SearchProps {
-  handleSearchMovies: (data: string) => void
-}
 
 export function Search({ handleSearchMovies }: SearchProps) {
   const { register, handleSubmit, reset } = useForm<SearchFormInputs>({

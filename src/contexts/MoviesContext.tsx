@@ -1,31 +1,12 @@
-import { createContext, ReactNode, useReducer, useEffect } from 'react'
+import { createContext, useReducer, useEffect } from 'react'
 import { addItemAction } from '../reducers/actions'
-import { MovieData, myMoviesReducer } from '../reducers/reducer'
-
-export interface Movie {
-  average_rating: number
-  backdrop_path: string
-  videoId?: string
-  id: number
-  poster_path: string
-  release_date: string
-  title: string
-  overview: string
-}
-
-interface MovieContextType {
-  myMovies: MovieData[]
-  addItem: (newMovie: MovieData) => void
-}
-
-interface MoviesProviderProps {
-  children: ReactNode
-}
+import { myMoviesReducer } from '../reducers/reducer'
+import { MovieContextType, MovieData, MoviesProviderProps } from '../types'
 
 export const MoviesContext = createContext({} as MovieContextType)
 
 export function MoviesProvider({ children }: MoviesProviderProps) {
-  const [cyclesState, dispatch] = useReducer(
+  const [moviesState, dispatch] = useReducer(
     myMoviesReducer,
     {
       myMovies: [],
@@ -45,17 +26,17 @@ export function MoviesProvider({ children }: MoviesProviderProps) {
     },
   )
 
-  const { myMovies } = cyclesState
+  const { myMovies } = moviesState
 
   function addItem(newMovie: MovieData) {
     dispatch(addItemAction(newMovie))
   }
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(cyclesState)
+    const stateJSON = JSON.stringify(moviesState)
 
     localStorage.setItem('@movie-app:myMovies-state-1.0.0', stateJSON)
-  }, [cyclesState])
+  }, [moviesState])
 
   return (
     <MoviesContext.Provider

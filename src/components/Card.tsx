@@ -1,15 +1,7 @@
 import { LinkSimple, YoutubeLogo } from 'phosphor-react'
+import { CardProps } from '../types'
 import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
 import { Button } from './Button'
-
-interface CardProps {
-  id: number
-  poster_path: string
-  title: string
-  release_date: string
-  myRate?: string
-  handleGetVideoId: (id: number) => void
-}
 
 export function Card(props: CardProps) {
   return (

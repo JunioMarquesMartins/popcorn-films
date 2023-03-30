@@ -2,13 +2,7 @@ import { Check } from 'phosphor-react'
 import { useCallback, useContext, useState } from 'react'
 import { MoviesContext } from '../contexts/MoviesContext'
 import { apiMdb } from '../lib/axios'
-import { MovieData } from '../reducers/reducer'
-
-interface StarProps {
-  id: string | undefined
-  sessionId: string
-  detailMovie: MovieData
-}
+import { StarProps } from '../types'
 
 export function StarRating({ id, sessionId, detailMovie }: StarProps) {
   const { addItem } = useContext(MoviesContext)
