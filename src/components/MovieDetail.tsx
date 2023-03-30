@@ -1,6 +1,7 @@
 import { Star } from 'phosphor-react'
 import YouTube from 'react-youtube'
-import { Movie } from '../contexts/MoviesContext'
+import { Movie } from '../types'
+
 import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
 import { Button } from './Button'
 

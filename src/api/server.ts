@@ -1,8 +1,7 @@
 import { apiMdb } from '../lib/axios'
 import { QueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { Movie } from '../contexts/MoviesContext'
-import { MovieData } from '../reducers/reducer'
+import { Movie, MovieData } from '../types'
 
 const queryClient = new QueryClient({
   defaultOptions: {

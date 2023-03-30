@@ -7,8 +7,8 @@ import { Loading } from '../components/Loading'
 import { MovieDetail } from '../components/MovieDetail'
 
 import { Search } from '../components/Search'
-import { Movie } from '../contexts/MoviesContext'
 import { moviesCategory } from '../data/moviesCategory'
+import { Movie } from '../types'
 
 export function MoviesPage() {
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
