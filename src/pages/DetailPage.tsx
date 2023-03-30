@@ -56,7 +56,7 @@ export function DetailPage() {
       {isLoading ? (
         <Loading />
       ) : (
-        detailMovie?.map((detail) => {
+        detailMovie.map((detail) => {
           return (
             <div
               key={detail?.id}
