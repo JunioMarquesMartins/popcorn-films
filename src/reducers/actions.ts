@@ -1,4 +1,4 @@
-import { MovieData } from './reducer'
+import { MovieData } from '../types'
 
 export enum ActionTypes {
   ADD_ITEM = 'ADD_ITEM',
