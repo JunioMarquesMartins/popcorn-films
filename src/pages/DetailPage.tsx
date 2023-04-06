@@ -2,8 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { StarRating } from '../components/StartRating'
-import { useMovies } from '../hooks/moviesQuerys'
-import { apiMdb } from '../lib/axios'
+import { useGuestSessionId, useMovies } from '../hooks/moviesQuerys'
 import { CONVERTE_RATE_VALUE, DATA_STARS } from '../utils/converteRateValue'
 import { dateFormatter } from '../utils/formatterDate'
 import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
@@ -12,29 +11,25 @@ export function DetailPage() {
   const { id } = useParams()
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
   const [sessionId, setSessionId] = useState('')
-  const [movieEndpoint, setMovieEndpoint] = useState(
+
+  // API calls
+  const { data: detailMovie, isLoading } = useMovies(
     `movie/${id}?api_key=${TMDB_KEY}`,
   )
-  const { data: detailMovie, isLoading } = useMovies(movieEndpoint)
+  const responseGuestSession = useGuestSessionId(
+    `authentication/guest_session/new?api_key=${TMDB_KEY}`,
+  )
 
   // do a refactor after
-  const fetchGuestSessionId = useCallback(async () => {
-    const response = await apiMdb.get(
-      `authentication/guest_session/new?api_key=${TMDB_KEY}`,
-    )
-    return response.data.guest_session_id
-  }, [TMDB_KEY])
-
   const saveGuestSessionId = useCallback(async () => {
     const isGuestSessionId = await localStorage.getItem(
       '@movie-app:guest-session-id-1.0.0',
     )
     if (isGuestSessionId === null) {
-      const responseSessionId = await fetchGuestSessionId()
-
+      const responseSessionId = await responseGuestSession.refetch()
       localStorage.setItem(
         '@movie-app:guest-session-id-1.0.0',
-        responseSessionId,
+        responseSessionId.data,
       )
 
       setSessionId(
@@ -47,7 +42,7 @@ export function DetailPage() {
       setSessionId(isGuestSessionId)
       console.log('sessionID', sessionId)
     }
-  }, [fetchGuestSessionId, sessionId])
+  }, [sessionId])
 
   useEffect(() => {
     saveGuestSessionId()

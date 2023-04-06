@@ -16,6 +16,11 @@ export const fetchMovies = async (url: string) => {
   return response.data
 }
 
+export const fetchGuestSessionId = async (url: string) => {
+  const response = await apiMdb.get(url)
+  return response.data.guest_session_id
+}
+
 export const fetchMovieId = async (id: number) => {
   const response = await apiMdb.get(`movie/${id}?api_key=${TMDB_KEY}`)
   return response.data
