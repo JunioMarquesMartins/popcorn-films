@@ -1,5 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchMovieId, fetchMovies } from '../api/server'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { fetchMovieId, fetchMovies, postRateMovie } from '../api/server'
+
+export function useMutationRateMovie(URL_POST_RATE: string, rating: object) {
+  return useMutation((rating: object) => postRateMovie(URL_POST_RATE, rating))
+}
 
 export function useMovies(movieEndpoint: string) {
   return useQuery(

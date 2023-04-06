@@ -23,6 +23,11 @@ export const fetchMovieId = async (id: number) => {
   return response.data
 }
 
+export const postRateMovie = async (url: string, rating: object) => {
+  const { data } = await apiMdb.post(url, rating)
+  return data
+}
+
 export function useFetchDetailMovie(id: string | undefined) {
   const [detailMovie, setDetailMovie] = useState<MovieData[]>([])
   const [isLoading, setIsLoading] = useState(true)
