@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { StarRating } from '../components/StartRating'
-import { useGuestSessionId, useMovies } from '../hooks/moviesQuerys'
+import { useSaveSessionId } from '../hooks/guestSessionIdStorage'
+import { useMovies } from '../hooks/moviesQuerys'
 import { CONVERTE_RATE_VALUE, DATA_STARS } from '../utils/converteRateValue'
 import { dateFormatter } from '../utils/formatterDate'
 import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
@@ -10,43 +10,12 @@ import { PATH_IMAGES_TMDB } from '../utils/pathImagesTMDB'
 export function DetailPage() {
   const { id } = useParams()
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
-  const [sessionId, setSessionId] = useState('')
 
-  // API calls
   const { data: detailMovie, isLoading } = useMovies(
     `movie/${id}?api_key=${TMDB_KEY}`,
   )
-  const responseGuestSession = useGuestSessionId(
-    `authentication/guest_session/new?api_key=${TMDB_KEY}`,
-  )
 
-  // do a refactor after
-  const saveGuestSessionId = useCallback(async () => {
-    const isGuestSessionId = await localStorage.getItem(
-      '@movie-app:guest-session-id-1.0.0',
-    )
-    if (isGuestSessionId === null) {
-      const responseSessionId = await responseGuestSession.refetch()
-      localStorage.setItem(
-        '@movie-app:guest-session-id-1.0.0',
-        responseSessionId.data,
-      )
-
-      setSessionId(
-        String(localStorage.getItem('@movie-app:guest-session-id-1.0.0')),
-      )
-    } else {
-      const isGuestSessionId = String(
-        localStorage.getItem('@movie-app:guest-session-id-1.0.0'),
-      )
-      setSessionId(isGuestSessionId)
-      console.log('sessionID', sessionId)
-    }
-  }, [sessionId])
-
-  useEffect(() => {
-    saveGuestSessionId()
-  }, [saveGuestSessionId])
+  const sessionId = useSaveSessionId()
 
   return (
     <>
