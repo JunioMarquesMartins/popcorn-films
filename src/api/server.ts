@@ -1,7 +1,7 @@
 import { apiMdb } from '../lib/axios'
 import { QueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { Movie, MovieData } from '../types'
+import { MovieData } from '../types'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,30 +13,9 @@ const queryClient = new QueryClient({
 
 const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
 
-export function useMoviesFetch(url: string) {
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await queryClient.fetchQuery(['getMovies'], {
-          queryFn: () =>
-            apiMdb.get(url).then((response) => response.data.results),
-        })
-
-        setMovies(response)
-      } catch (e) {
-        console.log(e)
-      } finally {
-        console.log('🎉 Finally fetchMovies ', url)
-        setIsLoading(false)
-      }
-    }
-    fetchMovies()
-  }, [url])
-
-  return { movies, isLoading }
+export const fetchMovies = async (url: string) => {
+  const response = await apiMdb.get(url)
+  return response.data.results
 }
 
 export function useFetchDetailMovie(id: string | undefined) {

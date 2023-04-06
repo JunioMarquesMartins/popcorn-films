@@ -1,6 +1,6 @@
 import { ArrowRight } from 'phosphor-react'
 import { useState } from 'react'
-import { fetchMovieId, fetchVideoId, useMoviesFetch } from '../api/server'
+import { fetchMovieId, fetchVideoId } from '../api/server'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { Loading } from '../components/Loading'
@@ -8,7 +8,8 @@ import { MovieDetail } from '../components/MovieDetail'
 
 import { Search } from '../components/Search'
 import { moviesCategory } from '../data/moviesCategory'
-import { Movie } from '../types'
+import { useMovies } from '../hooks/moviesQuerys'
+import { CardProps, Movie } from '../types'
 
 export function MoviesPage() {
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
@@ -21,7 +22,7 @@ export function MoviesPage() {
     `movie/upcoming?api_key=${TMDB_KEY}`,
   )
 
-  const { movies, isLoading } = useMoviesFetch(movieEndpoint)
+  const { data: movies, isLoading, error, isSuccess } = useMovies(movieEndpoint)
 
   const handleGetVideoId = async (id: number) => {
     const responseVideoId: string = await fetchVideoId(id)
@@ -42,11 +43,7 @@ export function MoviesPage() {
 
   return (
     <>
-      {movieInfo[0] ? (
-        <MovieDetail videoId={videoId} {...movieInfo[0]} />
-      ) : (
-        <MovieDetail {...movies[0]} />
-      )}
+      {movieInfo[0] && <MovieDetail videoId={videoId} {...movieInfo[0]} />}
       <section className="max-w-5xl m-auto py-5">
         <Search handleSearchMovies={handleSearchMovies} />
         {isLoading ? (
@@ -76,7 +73,7 @@ export function MoviesPage() {
               <ArrowRight className="text-white mb-3" size={20} />
             </div>
             <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
-              {movies.map((movie) => {
+              {movies.map((movie: any) => {
                 return (
                   <Card
                     handleGetVideoId={handleGetVideoId}
