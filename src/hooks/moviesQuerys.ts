@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchMovies } from '../api/server'
+import { fetchMovieId, fetchMovies } from '../api/server'
 
 export function useMovies(movieEndpoint: string) {
   return useQuery(
@@ -12,4 +12,13 @@ export function useMovies(movieEndpoint: string) {
       },
     },
   )
+}
+
+export function useDetailMovie(movieID: number) {
+  return useQuery(['getMovieDetailId', movieID], () => fetchMovieId(movieID), {
+    enabled: false,
+    onSuccess() {
+      console.log('🎉 Finally fetchMovies ', movieID)
+    },
+  })
 }

@@ -1,6 +1,6 @@
 import { ArrowRight } from 'phosphor-react'
 import { useState } from 'react'
-import { fetchMovieId, fetchVideoId } from '../api/server'
+import { fetchVideoId } from '../api/server'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { Loading } from '../components/Loading'
@@ -8,27 +8,26 @@ import { MovieDetail } from '../components/MovieDetail'
 
 import { Search } from '../components/Search'
 import { moviesCategory } from '../data/moviesCategory'
-import { useMovies } from '../hooks/moviesQuerys'
-import { CardProps, Movie } from '../types'
+import { useDetailMovie, useMovies } from '../hooks/moviesQuerys'
 
 export function MoviesPage() {
   const TMDB_KEY = import.meta.env.VITE_TMDB_KEY
 
   const [videoId, setVideoId] = useState<string>('')
-  const [movieInfo, setMovieInfo] = useState<Movie[]>([])
   const [btnActive, setBtnActive] = useState('upcoming')
-
+  const [movieID, setMovieID] = useState(0)
   const [movieEndpoint, setMovieEndpoint] = useState(
     `movie/upcoming?api_key=${TMDB_KEY}`,
   )
 
-  const { data: movies, isLoading, error, isSuccess } = useMovies(movieEndpoint)
+  const { data: movies, isLoading } = useMovies(movieEndpoint)
+  const movieInfo = useDetailMovie(movieID)
 
   const handleGetVideoId = async (id: number) => {
+    setMovieID(id)
     const responseVideoId: string = await fetchVideoId(id)
     setVideoId(responseVideoId)
-    const responseMovieId: any = await fetchMovieId(id)
-    setMovieInfo(responseMovieId)
+    movieInfo.refetch()
     window.scrollTo(0, 0)
   }
 
@@ -43,7 +42,7 @@ export function MoviesPage() {
 
   return (
     <>
-      {movieInfo[0] && <MovieDetail videoId={videoId} {...movieInfo[0]} />}
+      {movieInfo.data && <MovieDetail videoId={videoId} {...movieInfo.data} />}
       <section className="max-w-5xl m-auto py-5">
         <Search handleSearchMovies={handleSearchMovies} />
         {isLoading ? (

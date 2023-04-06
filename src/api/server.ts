@@ -18,6 +18,11 @@ export const fetchMovies = async (url: string) => {
   return response.data.results
 }
 
+export const fetchMovieId = async (id: number) => {
+  const response = await apiMdb.get(`movie/${id}?api_key=${TMDB_KEY}`)
+  return response.data
+}
+
 export function useFetchDetailMovie(id: string | undefined) {
   const [detailMovie, setDetailMovie] = useState<MovieData[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -65,22 +70,5 @@ export const fetchVideoId = async (id: number) => {
     console.log(e)
   } finally {
     console.log('🎉 Finally fetchVideoId ', id)
-  }
-}
-
-export const fetchMovieId = async (id: number) => {
-  try {
-    const response = await queryClient.fetchQuery(['getMovieDetailId'], {
-      queryFn: () =>
-        apiMdb
-          .get(`movie/${id}?api_key=${TMDB_KEY}`)
-          .then((response) => response.data),
-    })
-
-    return [response]
-  } catch (e) {
-    console.log(e)
-  } finally {
-    console.log('🎉 Finally fetchMovieId ', id)
   }
 }
