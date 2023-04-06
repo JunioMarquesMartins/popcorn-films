@@ -72,7 +72,7 @@ export function MoviesPage() {
               <ArrowRight className="text-white mb-3" size={20} />
             </div>
             <div className="flex flex-col md:grid md:grid-cols-3 gap-5">
-              {movies.map((movie: any) => {
+              {movies.results.map((movie: any) => {
                 return (
                   <Card
                     handleGetVideoId={handleGetVideoId}
